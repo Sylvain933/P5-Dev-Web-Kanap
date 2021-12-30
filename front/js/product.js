@@ -4,7 +4,7 @@ let idProduct = url.searchParams.get("id");
 console.log(idProduct);
 let article = "";
 
-const colorPicked = document. querySelector("#colors");
+const colorPicked = document.querySelector("#colors");
 const quantityPicked = document.querySelector("#quantity");
 
 getArticle();
@@ -56,5 +56,4 @@ function getPost(article){
         productColors.value = colors;
         productColors.innerHTML = colors;
     }
-    addToCart(article);
 }

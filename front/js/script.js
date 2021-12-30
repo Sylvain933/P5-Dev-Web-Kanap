@@ -18,7 +18,7 @@ async function Section() {
             //Création de l'élément "a"
             let productLink = document.createElement("a");
             document.querySelector(".items").appendChild(productLink);
-            productLink.href = `product.html id=${resultatAPI[article]._id}`;
+            productLink.href = `product.html?id=${resultatAPI[article]._id}`;
 
             // Création de l'élément "article"
             let productArticle = document.createElement("article");
