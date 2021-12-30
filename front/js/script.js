@@ -1,17 +1,21 @@
 
 Section();
-
+//Récupération des articles dans l'API 
 async function getArticles() {
     const articlesCatch = await fetch ("http://localhost:3000/api/products")
     return await articlesCatch.json();
 }
 
+
+//Répartition des données de l'API dans le DOM
 async function Section() {
     let result = await getArticles()
     .then(function(resultatAPI){
         const articles = resultatAPI;
         console.log(articles);
         for (let article in articles){
+
+            //Création de l'élément "a"
             let productLink = document.createElement("a");
             document.querySelector(".items").appendChild(productLink);
             productLink.href = `product.html id=${resultatAPI[article]._id}`;
