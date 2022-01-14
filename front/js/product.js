@@ -65,7 +65,7 @@ function addToCart(article) {
 
     //Ecouter le panier avec 2 conditions couleur non nulle et quantité entre 1 et 100
     btn_envoyerPanier.addEventListener("click", (event)=>{
-        if (quantityPicked.value > 0 && quantityPicked.value <=100 && quantityPicked.value != 0){
+        if (quantityPicked.value > 0 && quantityPicked.value <=100){
 
     //Recupération du choix de la couleur
     let choixCouleur = colorPicked.value;

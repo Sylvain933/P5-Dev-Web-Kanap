@@ -91,3 +91,173 @@ for (let produit in produitLocalStorage){
 }
 }}
 getCart();
+
+function getTotals(){
+
+    // Récupération du total des quantités
+    var elemsQte = document.getElementsByClassName('itemQuantity');
+    var myLength = elemsQte.length,
+    totalQte = 0;
+
+    for (var i = 0; i < myLength; i++) {
+        totalQte += elemsQte[i].valueAsNumber;
+    }
+
+    let productTotalQuantity = document.getElementById('totalQuantity');
+    productTotalQuantity.innerHTML = totalQte;
+    console.log(totalQte);
+
+    // Récupération du prix total
+    totalPrice = 0;
+
+    for (var i = 0; i < myLength; i++) {
+        totalPrice += (elemsQte[i].valueAsNumber * produitLocalStorage[i].prixProduit);
+    }
+
+    let productTotalPrice = document.getElementById('totalPrice');
+    productTotalPrice.innerHTML = totalPrice;
+    console.log(totalPrice);
+}
+getTotals();
+
+// Modification d'une quantité de produit
+function modifyQte() {
+    let qteModif = document.querySelectorAll(".itemQuantity");
+
+    for (let k = 0; k < qteModif.length; k++){
+        qteModif[k].addEventListener("change" , (event) => {
+            event.preventDefault();
+
+            //Selection de l'element à modifier en fonction de son id ET sa couleur
+            let quantityModif = produitLocalStorage[k].quantiteProduit;
+            let qteModifValue = qteModif[k].valueAsNumber;
+            
+            const resultFind = produitLocalStorage.find((el) => el.qteModifValue !== quantityModif);
+
+            resultFind.quantiteProduit = qteModifValue;
+            produitLocalStorage[k].quantiteProduit = resultFind.quantiteProduit;
+
+            localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+        
+            // refresh rapide
+            location.reload();
+        })
+    }
+}
+modifyQte();
+
+// Suppression d'un produit
+function deleteProduct() {
+    let btn_supprimer = document.querySelectorAll(".deleteItem");
+
+    for (let j = 0; j < btn_supprimer.length; j++){
+        btn_supprimer[j].addEventListener("click" , (event) => {
+            event.preventDefault();
+
+            //Selection de l'element à supprimer en fonction de son id ET sa couleur
+            let idDelete = produitLocalStorage[j].idProduit;
+            let colorDelete = produitLocalStorage[j].couleurProduit;
+
+            produitLocalStorage = produitLocalStorage.filter( el => el.idProduit !== idDelete || el.couleurProduit !== colorDelete );
+            
+            localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+
+            //Alerte produit supprimé et refresh
+            alert("Ce produit a bien été supprimé du panier");
+            location.reload();
+        })
+    }
+}
+deleteProduct();
+
+//Instauration formulaire 
+function getForm() {
+    // Ajout des Regex
+    let form = document.querySelector(".cart__order__form");
+
+    //Création des expressions régulières
+    let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
+    let charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
+    let addressRegExp = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+
+    // Ecoute de la modification du prénom
+    form.firstName.addEventListener('change', function() {
+        validFirstName(this);
+    });
+
+    // Ecoute de la modification du nom
+    form.lastName.addEventListener('change', function() {
+        validLastName(this);
+    });
+
+    // Ecoute de la modification de l'adresse
+    form.address.addEventListener('change', function() {
+        validAddress(this);
+    });
+
+    // Ecoute de la modification de la ville
+    form.city.addEventListener('change', function() {
+        validCity(this);
+    });
+
+    // Ecoute de la modification de l'email
+    form.email.addEventListener('change', function() {
+        validEmail(this);
+    });
+
+    //validation du prénom
+    const validFirstName = function(inputFirstName) {
+        let firstNameErrorMsg = inputFirstName.nextElementSibling;
+
+        if (charRegExp.test(inputFirstName.value)) {
+            firstNameErrorMsg.innerHTML = '';
+        } else {
+            firstNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+
+    //validation du nom
+    const validLastName = function(inputLastName) {
+        let lastNameErrorMsg = inputLastName.nextElementSibling;
+
+        if (charRegExp.test(inputLastName.value)) {
+            lastNameErrorMsg.innerHTML = '';
+        } else {
+            lastNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+
+    //validation de l'adresse
+    const validAddress = function(inputAddress) {
+        let addressErrorMsg = inputAddress.nextElementSibling;
+
+        if (addressRegExp.test(inputAddress.value)) {
+            addressErrorMsg.innerHTML = '';
+        } else {
+            addressErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+
+    //validation de la ville
+    const validCity = function(inputCity) {
+        let cityErrorMsg = inputCity.nextElementSibling;
+
+        if (charRegExp.test(inputCity.value)) {
+            cityErrorMsg.innerHTML = '';
+        } else {
+            cityErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+
+    //validation de l'email
+    const validEmail = function(inputEmail) {
+        let emailErrorMsg = inputEmail.nextElementSibling;
+
+        if (emailRegExp.test(inputEmail.value)) {
+            emailErrorMsg.innerHTML = '';
+        } else {
+            emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.';
+        }
+    };
+    }
+getForm();
